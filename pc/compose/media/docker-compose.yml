@@ -1,0 +1,193 @@
+services:
+  sonarr:
+    image: lscr.io/linuxserver/sonarr:latest
+    container_name: sonarr
+    restart: unless-stopped
+    labels:
+      glance.name: Sonarr
+      glance.icon: di:sonarr
+      glance.url: https://sonarr.m3v.dev
+      glance.description: TV-Show manager
+      glance.category: media
+    environment:
+      - TZ=Europe/Amsterdam
+    volumes:
+      - D:\srv\docker\data\sonarr:/config
+      - F:\media\anime4:/anime4
+      - E:\anime3:/anime3
+      - G:\anime2:/anime2
+      - D:\srv\docker\media\anime:/anime
+      - D:\srv\docker\media\downloads:/downloads
+    ports:
+      - 8989:8989
+    networks:
+      - net
+
+  radarr:
+    image: lscr.io/linuxserver/radarr:latest
+    container_name: radarr
+    restart: unless-stopped
+    labels:
+      glance.name: Radarr
+      glance.icon: di:radarr
+      glance.url: https://radarr.m3v.dev
+      glance.description: Movie manager
+      glance.category: media
+    environment:
+      - TZ=Europe/Amsterdam
+    volumes:
+      - D:\srv\docker\data\radarr:/config
+      - F:\media\movies4:/movies4
+      - E:\movies3:/movies3
+      - G:\movies2:/movies2
+      - D:\srv\docker\media\movies:/movies
+      - D:\srv\docker\media\downloads:/downloads
+    ports:
+      - 7878:7878
+    networks:
+      - net
+
+  qbittorrent:
+    image: lscr.io/linuxserver/qbittorrent:latest
+    container_name: qbittorrent
+    restart: unless-stopped
+    labels:
+      glance.name: Qbittorrent
+      glance.icon: di:qbittorrent
+      glance.url: https://qbit.m3v.dev
+      glance.description: torrent client
+      glance.category: media
+    environment:
+    - TZ=Europe/Amsterdam
+    - WEBUI_PORT=8080
+    - TORRENTING_PORT=6881
+    volumes:
+      - D:\srv\docker\data\qbit:/config
+      - D:\srv\docker\media\downloads:/downloads
+    depends_on:
+      - gluetun
+    network_mode: "service:gluetun"
+
+  prowlarr:
+    image: lscr.io/linuxserver/prowlarr:latest
+    container_name: prowlarr
+    restart: unless-stopped
+    labels:
+      glance.name: Prowlarr
+      glance.id: prowlarr
+      glance.icon: di:prowlarr
+      glance.url: https://prowlarr.m3v.dev
+      glance.description: indexer manager
+      glance.category: media
+    environment:
+      - TZ=Europe/Amsterdam
+    volumes:
+      - D:\srv\docker\data\prowlarr:/config
+    depends_on:
+      - gluetun
+    network_mode: "service:gluetun"
+
+  recyclarr:
+    image: ghcr.io/recyclarr/recyclarr:latest
+    container_name: recyclarr
+    restart: unless-stopped
+    labels:
+      glance.name: Recyclarr
+      glance.icon: di:recyclarr
+      glance.description: management for media quality profiles
+      glance.category: media
+    environment:
+      - TZ=Europe/Amsterdam
+      - NOTIFIARR_API_KEY=${NOTIFIARR_API_KEY}
+    volumes:
+      - D:\srv\docker\data\recyclarr:/config
+    depends_on:
+      - sonarr
+      - radarr
+    networks:
+      - net
+  
+  jellyfin:
+    image: jellyfin/jellyfin:latest
+    container_name: jellyfin
+    restart: unless-stopped
+    labels:
+      glance.name: Jellyfin
+      glance.icon: di:jellyfin
+      glance.url: https://jellyfin.m3v.dev
+      glance.description: media docker
+      glance.category: media
+    environment:
+      - TZ=Europe/Amsterdam
+    volumes:
+      - D:\srv\docker\data\jellyfin:/config
+      - D:\srv\docker\data\jellyfin\cache:/cache
+      - F:\media\anime4:/anime4
+      - E:\anime3:/anime3
+      - G:\anime2:/anime2
+      - D:\srv\docker\media\anime:/anime
+      - F:\media\movies4:/movies4
+      - E:\movies3:/movies3
+      - G:\movies2:/movies2
+      - D:\srv\docker\media\movies:/movies
+    ports:
+      - 8096:8096
+      - 7359:7359/udp
+    networks:
+      - net
+      
+  gluetun:
+    image: qmcgaw/gluetun:latest
+    container_name: gluetun
+    restart: unless-stopped
+    labels:
+      glance.name: Gluetun
+      glance.icon: di:gluetun
+      glance.description: vpn client
+      glance.category: network
+    cap_add:
+        - NET_ADMIN
+    devices:
+        - /dev/net/tun:/dev/net/tun
+    environment:
+      - VPN_SERVICE_PROVIDER=mullvad
+      - VPN_TYPE=openvpn
+      - OPENVPN_USER=${OPENVPN_USER}
+      - OPENVPN_PASSWORD=m
+      - OPENVPN_CUSTOM_CONFIG=/gluetun/mullvad_nl_ams.ovpn
+      - TZ=Europe/Amsterdam
+    volumes:
+    - D:\srv\docker\data\openvpn:/gluetun
+    healthcheck:
+      test: ["CMD", "wget", "-qO", "-", "https://ipinfo.io/ip"]
+      interval: 30s
+      retries: 3
+    ports:
+      - 9696:9696
+      - 8191:8191
+      - 8080:8080
+      - 6881:6881/udp
+      - 6881:6881/tcp
+    networks:
+      - net
+
+  flaresolverr:
+    image: flaresolverr/flaresolverr:latest
+    container_name: flaresolverr
+    restart: unless-stopped
+    labels:
+      glance.name: FlareSolverr
+      glance.icon: di:cloudflare
+      glance.description: bypass cloudflare protections
+      glance.category: network
+      glance.parent: prowlarr
+    environment:
+      - LOG_LEVEL=info
+      - CAPTCHA_SOLVER=none
+      - TZ=Europe/Amsterdam
+    depends_on:
+      - radarr
+      - sonarr
+      - prowlarr
+      - gluetun
+    network_mode: "service:gluetun"

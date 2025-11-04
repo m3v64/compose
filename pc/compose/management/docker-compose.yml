@@ -1,0 +1,34 @@
+services:
+  watchtower:
+    image: containrrr/watchtower:latest
+    container_name: watchtower
+    restart: unless-stopped
+    labels:
+      glance.name: Watchtower
+      glance.icon: di:watchtower
+      glance.description: automatic docker container updates
+      glance.category: management   
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    command: --interval 300 --cleanup
+    networks:
+      - net
+
+  cadvisor:
+    image: gcr.io/cadvisor/cadvisor:latest
+    container_name: cadvisor
+    restart: unless-stopped
+    labels:
+      glance.name: cadvisor
+      glance.icon: di:cadvisor
+      glance.description: docker container stat tracking application
+      glance.category: management   
+    ports:
+      - "8228:8080"
+    volumes:
+      - /:/rootfs:ro
+      - /var/run:/var/run:ro
+      - /sys:/sys:ro
+      - /var/lib/docker/:/var/lib/docker:ro
+    networks:
+      - net
