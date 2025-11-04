@@ -1,0 +1,68 @@
+services:
+  suwayomi:
+    image: ghcr.io/suwayomi/tachidesk:latest
+    container_name: suwayomi
+    restart: unless-stopped
+    user: 1000:1000
+    labels:
+      glance.name: Suwayomi
+      glance.icon: di:suwayomi
+      glance.url: https://suwayomi.m3v.dev
+      glance.description: Manga reader and manager
+      glance.category: manga
+    environment:
+      - EXTENSION_REPOS=["https://raw.githubusercontent.com/keiyoushi/extensions/repo/index.min.json","https://raw.githubusercontent.com/suwayomi/tachiyomi-extension/repo/index.min.json"]
+      - TZ=Europe/Amsterdam
+    volumes:
+      - /home/m3v/shared/rpi-docker/media/manga:/home/suwayomi/.local/share/Tachidesk/downloads
+      - /home/m3v/shared/rpi-docker/data/suwayomi:/home/suwayomi/.local/share/Tachidesk
+    ports:
+      - 4567:4567
+    networks:
+      - net
+
+  komga:
+    image: ghcr.io/gotson/komga:latest
+    container_name: komga
+    restart: unless-stopped
+    labels:
+      glance.name: Komga
+      glance.icon: di:komga
+      glance.url: https://komga.m3v.dev
+      glance.description: Manga reader
+      glance.category: manga
+    environment:
+      - TZ=Europe/Amsterdam
+    volumes:
+      - /home/m3v/shared/rpi-docker/data/komga:/config
+      - /home/m3v/shared/rpi-docker/media/manga:/books
+    depends_on:
+      - caddy
+    ports:
+      - 25600:25600
+    networks:
+      - net
+
+  komf:
+    image: sndxr/komf:latest
+    container_name: komf
+    restart: unless-stopped
+    labels:
+      glance.name: Komf
+      glance.icon: di:komga
+      glance.description: Manga reader companion app for Komga
+      glance.category: manga
+    environment:
+      - KOMF_KOMGA_BASE_URI=https://komga.m3v.dev
+      - KOMF_KOMGA_USER=max@m3v.dev
+      - KOMF_KOMGA_PASSWORD=${KOMGA_PASSWORD}
+      - KOMF_LOG_LEVEL=INFO
+      - JAVA_TOOL_OPTIONS=-XX:+UnlockExperimentalVMOptions -XX:+UseShenandoahGC -XX:ShenandoahGCHeuristics=compact -XX:ShenandoahGuaranteedGCInterval=3600000 -XX:TrimNativeHeapInterval=3600000
+    volumes:
+      - /home/m3v/shared/rpi-docker/data/komf:/config
+    depends_on:
+      - komga
+    ports:
+      - 8085:8085
+    networks:
+      - net
