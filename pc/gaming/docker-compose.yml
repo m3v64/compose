@@ -14,49 +14,24 @@ services:
       EULA: "TRUE"
       TYPE: "FABRIC"
       VERSION: "1.21.8"
-      MEMORY: "16384M"
+      SERVER_PORT: "25565"
+      INIT_MEMORY: 16G
+      MAX_MEMORY: 32G
       ICON: "https://i.postimg.cc/t4h1jLMq/458e66e654804bceb89c3f7edb5adc49e21f93fav2-00-1.jpg"
+      MOTD: "<white>the most sane 1.21.8 vanilla+ minecraft server\n<aqua>~~~~~~~~~~~~<『mc.m3v.dev』>~~~~~~~~~~~~"
       USE_AIKAR_FLAGS: "true"
       TZ: "Europe/Amsterdam"
       DIFFICULTY: "3"
       ENABLE_COMMAND_BLOCK: "true"
-      SIMULATION_DISTANCE: "16"
-      VIEW_DISTANCE: "16"
+      SIMULATION_DISTANCE: "6"
+      VIEW_DISTANCE: "12"
       SPAWN_PROTECTION: "1"
       OPS: |-
         m3v_
       ALLOW_FLIGHT: "true"
     volumes:
-      - D:\srv\docker\data\mc\end_of_summer_2025:/data
-    depends_on:
-      - tailscale
-    network_mode: "service:tailscale"
+      - /home/m3v/srv/media/minecraft/nov-25-boys:/data
+    network_mode: host
 
-  tailscale:
-    image: tailscale/tailscale:latest
-    container_name: tailscale
-    hostname: mc
-    restart: unless-stopped
-    labels:
-      glance.name: Tailscale
-      glance.icon: si:tailscale
-      glance.description: vpn client
-      glance.tags: network
-    cap_add:
-      - NET_ADMIN
-      - SYS_MODULE
-    environment:
-      - TS_AUTHKEY=${TS_AUTHKEY}
-      - TS_STATE_DIR=/var/lib/tailscale
-      - TS_HOSTNAME=mc
-      - TS_EXTRA_ARGS=--ssh
-      - TS_USERSPACE=false
-    volumes:
-      - /dev/net/tun:/dev/net/tun
-      - D:\srv\docker\data\tailscale:/var/lib/tailscale
-    ports:
-      - 25566:25566
-    networks:
-      - net
 
 

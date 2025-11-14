@@ -12,12 +12,9 @@ services:
     environment:
       - TZ=Europe/Amsterdam
     volumes:
-      - D:\srv\docker\data\sonarr:/config
-      - F:\media\anime4:/anime4
-      - E:\anime3:/anime3
-      - G:\anime2:/anime2
-      - D:\srv\docker\media\anime:/anime
-      - D:\srv\docker\media\downloads:/downloads
+      - /home/m3v/srv/data/sonarr:/config
+      - /home/m3v/srv/media/anime:/anime
+      - /home/m3v/srv/media/downloads:/downloads
     ports:
       - 8989:8989
     networks:
@@ -36,12 +33,9 @@ services:
     environment:
       - TZ=Europe/Amsterdam
     volumes:
-      - D:\srv\docker\data\radarr:/config
-      - F:\media\movies4:/movies4
-      - E:\movies3:/movies3
-      - G:\movies2:/movies2
-      - D:\srv\docker\media\movies:/movies
-      - D:\srv\docker\media\downloads:/downloads
+      - /home/m3v/srv/data/radarr:/config
+      - /home/m3v/srv/media/movies:/movies
+      - /home/m3v/srv/media/downloads:/downloads
     ports:
       - 7878:7878
     networks:
@@ -62,8 +56,8 @@ services:
     - WEBUI_PORT=8080
     - TORRENTING_PORT=6881
     volumes:
-      - D:\srv\docker\data\qbit:/config
-      - D:\srv\docker\media\downloads:/downloads
+      - /home/m3v/srv/data/qbittorrent:/config
+      - /home/m3v/srv/media/downloads:/downloads
     depends_on:
       - gluetun
     network_mode: "service:gluetun"
@@ -82,7 +76,7 @@ services:
     environment:
       - TZ=Europe/Amsterdam
     volumes:
-      - D:\srv\docker\data\prowlarr:/config
+      - /home/m3v/srv/data/prowlarr:/config
     depends_on:
       - gluetun
     network_mode: "service:gluetun"
@@ -100,7 +94,7 @@ services:
       - TZ=Europe/Amsterdam
       - NOTIFIARR_API_KEY=${NOTIFIARR_API_KEY}
     volumes:
-      - D:\srv\docker\data\recyclarr:/config
+      - /home/m3v/srv/data/recyclarr:/config
     depends_on:
       - sonarr
       - radarr
@@ -120,16 +114,10 @@ services:
     environment:
       - TZ=Europe/Amsterdam
     volumes:
-      - D:\srv\docker\data\jellyfin:/config
-      - D:\srv\docker\data\jellyfin\cache:/cache
-      - F:\media\anime4:/anime4
-      - E:\anime3:/anime3
-      - G:\anime2:/anime2
-      - D:\srv\docker\media\anime:/anime
-      - F:\media\movies4:/movies4
-      - E:\movies3:/movies3
-      - G:\movies2:/movies2
-      - D:\srv\docker\media\movies:/movies
+      - /home/m3v/srv/data/jellyfin:/config
+      - /home/m3v/srv/data/jellyfin/cache:/cache
+      - /home/m3v/srv/media/anime:/anime
+      - /home/m3v/srv/media/movies:/movies
     ports:
       - 8096:8096
       - 7359:7359/udp
@@ -157,7 +145,7 @@ services:
       - OPENVPN_CUSTOM_CONFIG=/gluetun/mullvad_nl_ams.ovpn
       - TZ=Europe/Amsterdam
     volumes:
-    - D:\srv\docker\data\openvpn:/gluetun
+    - /home/m3v/srv/data/gluetun:/gluetun
     healthcheck:
       test: ["CMD", "wget", "-qO", "-", "https://ipinfo.io/ip"]
       interval: 30s
