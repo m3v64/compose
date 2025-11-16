@@ -3,6 +3,7 @@ services:
     image: itzg/minecraft-server:latest
     container_name: mc
     restart: unless-stopped
+    cpus: "6.0" 
     labels:
       glance.name: Minecraft
       glance.icon: si:minetest
@@ -18,7 +19,7 @@ services:
       INIT_MEMORY: 16G
       MAX_MEMORY: 32G
       ICON: "https://i.postimg.cc/t4h1jLMq/458e66e654804bceb89c3f7edb5adc49e21f93fav2-00-1.jpg"
-      MOTD: "<white>the most sane 1.21.8 vanilla+ minecraft server\n<aqua>~~~~~~~~~~~~<『mc.m3v.dev』>~~~~~~~~~~~~"
+      MOTD: "\u00A7fthe most sane 1.21.8 vanilla+ minecraft server\u00A7r\n\u00A7b~~~~~~~~~~~~~~<『mc.m3v.dev』>~~~~~~~~~~~~~~"
       USE_AIKAR_FLAGS: "true"
       TZ: "Europe/Amsterdam"
       DIFFICULTY: "3"
@@ -30,7 +31,7 @@ services:
         m3v_
       ALLOW_FLIGHT: "true"
     volumes:
-      - /home/m3v/srv/media/minecraft/nov-25-boys:/data
+      - /home/m3v/sync/srv/media/nov-25-boys:/data
     network_mode: host
 
 
