@@ -12,9 +12,9 @@ services:
     environment:
       - TZ=Europe/Amsterdam
     volumes:
-      - /home/m3v/sync/srv/data/sonarr:/config
-      - /home/m3v/sync/srv/media/anime:/anime
-      - /home/m3v/sync/srv/media/downloads:/downloads
+      - /home/m3v/srv/data/sonarr:/config
+      - /home/m3v/srv/media/anime:/anime
+      - /home/m3v/srv/media/downloads:/downloads
     ports:
       - 8989:8989
     networks:
@@ -33,9 +33,9 @@ services:
     environment:
       - TZ=Europe/Amsterdam
     volumes:
-      - /home/m3v/sync/srv/data/radarr:/config
-      - /home/m3v/sync/srv/media/movies:/movies
-      - /home/m3v/sync/srv/media/downloads:/downloads
+      - /home/m3v/srv/data/radarr:/config
+      - /home/m3v/srv/media/movies:/movies
+      - /home/m3v/srv/media/downloads:/downloads
     ports:
       - 7878:7878
     networks:
@@ -56,8 +56,8 @@ services:
     - WEBUI_PORT=8080
     - TORRENTING_PORT=6881
     volumes:
-      - /home/m3v/sync/srv/data/qbittorrent:/config
-      - /home/m3v/sync/srv/media/downloads:/downloads
+      - /home/m3v/srv/data/qbittorrent:/config
+      - /home/m3v/srv/media/downloads:/downloads
     depends_on:
       - gluetun
     network_mode: "service:gluetun"
@@ -76,7 +76,7 @@ services:
     environment:
       - TZ=Europe/Amsterdam
     volumes:
-      - /home/m3v/sync/srv/data/prowlarr:/config
+      - /home/m3v/srv/data/prowlarr:/config
     depends_on:
       - gluetun
     network_mode: "service:gluetun"
@@ -94,7 +94,7 @@ services:
       - TZ=Europe/Amsterdam
       - NOTIFIARR_API_KEY=${NOTIFIARR_API_KEY}
     volumes:
-      - /home/m3v/sync/srv/data/recyclarr:/config
+      - /home/m3v/srv/data/recyclarr:/config
     depends_on:
       - sonarr
       - radarr
@@ -114,10 +114,10 @@ services:
     environment:
       - TZ=Europe/Amsterdam
     volumes:
-      - /home/m3v/sync/srv/data/jellyfin:/config
-      - /home/m3v/sync/srv/data/jellyfin/cache:/cache
-      - /home/m3v/sync/srv/media/anime:/anime
-      - /home/m3v/sync/srv/media/movies:/movies
+      - /home/m3v/srv/data/jellyfin:/config
+      - /home/m3v/srv/data/jellyfin/cache:/cache
+      - /home/m3v/srv/media/anime:/anime
+      - /home/m3v/srv/media/movies:/movies
     ports:
       - 8096:8096
       - 7359:7359/udp
@@ -145,7 +145,7 @@ services:
       - OPENVPN_CUSTOM_CONFIG=/gluetun/mullvad_nl_ams.ovpn
       - TZ=Europe/Amsterdam
     volumes:
-    - /home/m3v/sync/srv/data/gluetun:/gluetun
+    - /home/m3v/srv/data/gluetun:/gluetun
     healthcheck:
       test: ["CMD", "wget", "-qO", "-", "https://ipinfo.io/ip"]
       interval: 30s
