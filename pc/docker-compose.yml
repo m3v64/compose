@@ -1,7 +1,7 @@
 include:
 #  - path: media/docker-compose.yml
   - path: images/docker-compose.yml
-#  - path: gaming/docker-compose.yml
+  - path: gaming/docker-compose.yml
   - path: management/docker-compose.yml
 
 # network definition
