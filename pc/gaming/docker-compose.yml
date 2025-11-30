@@ -31,7 +31,7 @@ services:
         m3v_
       ALLOW_FLIGHT: "true"
     volumes:
-      - /home/m3v/srv/media/minecraft/dec-25-gays:/data
+      - /minecraft/dec-25-gays:/data
     network_mode: host
 
 
