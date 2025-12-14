@@ -9,7 +9,7 @@ services:
       - ${UPLOAD_LOCATION}:/Pictures
       - /etc/localtime:/etc/localtime:ro
     env_file:
-      - /home/m3v/srv/compose/pc/.env
+      - D:\srv\compose\pc\.env
     ports:
       - '2283:2283'
     depends_on:
@@ -25,7 +25,7 @@ services:
     volumes:
       - model-cache:/cache
     env_file:
-      - /home/m3v/srv/compose/pc/.env
+      - D:\srv\compose\pc\.env
     restart: always
     healthcheck:
       disable: false
