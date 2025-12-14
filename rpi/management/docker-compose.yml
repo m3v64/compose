@@ -78,30 +78,30 @@ services:
     networks:
       - net
 
-  node-exporter:
-    image: quay.io/prometheus/node-exporter:latest
-    container_name: node-exporter
-    restart: unless-stopped
-    pid: host
-    volumes:
-      - '/:/host:ro,rslave'
-    command:
-      - '--path.rootfs=/host'
-    network_mode: host
+  # node-exporter:
+  #   image: quay.io/prometheus/node-exporter:latest
+  #   container_name: node-exporter
+  #   restart: unless-stopped
+  #   pid: host
+  #   volumes:
+  #     - '/:/host:ro,rslave'
+  #   command:
+  #     - '--path.rootfs=/host'
+  #   network_mode: host
 
-  cadvisor:
-    image: gcr.io/cadvisor/cadvisor:latest
-    container_name: cadvisor
-    restart: unless-stopped
-    ports:
-      - "8080:8080"
-    volumes:
-      - /:/rootfs:ro
-      - /var/run:/var/run:ro
-      - /sys:/sys:ro
-      - /var/lib/docker/:/var/lib/docker:ro
-    networks:
-      - net
+  # cadvisor:
+  #   image: gcr.io/cadvisor/cadvisor:latest
+  #   container_name: cadvisor
+  #   restart: unless-stopped
+  #   ports:
+  #     - "8080:8080"
+  #   volumes:
+  #     - /:/rootfs:ro
+  #     - /var/run:/var/run:ro
+  #     - /sys:/sys:ro
+  #     - /var/lib/docker/:/var/lib/docker:ro
+  #   networks:
+  #     - net
 
 volumes:
   prometheus_data:
