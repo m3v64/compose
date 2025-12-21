@@ -19,9 +19,9 @@ services:
     networks:
       - net
   
-  blocky-day:
+  blocky:
     image: spx01/blocky
-    container_name: blocky-day
+    container_name: blocky
     restart: unless-stopped
     hostname: blocky
     labels:
