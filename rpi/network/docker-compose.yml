@@ -13,6 +13,7 @@ services:
       - /home/m3v/shared/rpi-docker/data/caddy/data:/data
       - /home/m3v/shared/rpi-docker/data/caddy/config:/config
       - /home/m3v/shared/rpi-docker/data/caddy/cloudflare-origin-cert/:/cloudflare-origin-cert
+      - /mnt/m3vmain-web:/m3vmain-web
     ports:
       - 443:443
       - 2025:2025
