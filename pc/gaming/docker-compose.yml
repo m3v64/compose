@@ -31,7 +31,7 @@ services:
         m3v_
       ALLOW_FLIGHT: "true"
     volumes:
-      - D:\srv\data\minecraft\dec-25-gays:/data
+      - D:\srv\media\minecraft\dec-25-gays:/data
     ports:
       - 25565:25565
     networks:

@@ -14,7 +14,7 @@ services:
     volumes:
       - D:\srv\data\sonarr:/config
       - E:\media\anime:/anime
-      - E:\media\downloads:/downloads
+      - D:\srv\media\downloads:/downloads
     ports:
       - 8989:8989
     networks:
@@ -34,8 +34,8 @@ services:
       - TZ=Europe/Amsterdam
     volumes:
       - D:\srv\data\radarr:/config
-      - E:\media\movies:/movies
-      - E:\media\downloads:/downloads
+      - D:\srv\media\movies:/movies
+      - D:\srv\media\downloads:/downloads
     ports:
       - 7878:7878
     networks:
@@ -57,7 +57,7 @@ services:
     - TORRENTING_PORT=6881
     volumes:
       - D:\srv\data\qbittorrent:/config
-      - E:\media\downloads:/downloads
+      - D:\srv\media\downloads:/downloads
     depends_on:
       - gluetun
     network_mode: "service:gluetun"
@@ -117,7 +117,7 @@ services:
       - D:\srv\data\jellyfin:/config
       - D:\srv\data\jellyfin\cache:/cache
       - E:\media\anime:/anime
-      - E:\media\movies:/movies
+      - D:\srv\media\movies:/movies
     ports:
       - 8096:8096
       - 7359:7359/udp
