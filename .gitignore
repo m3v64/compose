@@ -2,3 +2,5 @@ media/*
 data/*
 compose/*
 *.env
+*.crt
+*.key
