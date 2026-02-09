@@ -139,10 +139,10 @@ services:
         - /dev/net/tun:/dev/net/tun
     environment:
       - VPN_SERVICE_PROVIDER=mullvad
-      - VPN_TYPE=openvpn
-      - OPENVPN_USER=${OPENVPN_USER}
-      - OPENVPN_PASSWORD=m
-      - OPENVPN_CUSTOM_CONFIG=/gluetun/mullvad_nl_ams.ovpn
+      - VPN_TYPE=wireguard
+      - WIREGUARD_PRIVATE_KEY=${WIREGUARD_KEY}
+      - WIREGUARD_ADDRESSES=${WIREGUARD_ADDRESS}
+      - SERVER_COUNTRIES=Netherlands
       - TZ=Europe/Amsterdam
     volumes:
     - D:\srv\data\gluetun:/gluetun
