@@ -54,13 +54,17 @@ services:
     environment:
     - TZ=Europe/Amsterdam
     - WEBUI_PORT=8080
-    - TORRENTING_PORT=6881
+    - TORRENTING_PORT=45678
     volumes:
       - D:\srv\data\qbittorrent:/config
       - D:\srv\media\downloads:/downloads
-    depends_on:
-      - gluetun
-    network_mode: "service:gluetun"
+    ports:
+      - 8080:8080
+      - 45678:45678/udp
+      - 45678:45678/tcp
+    # network_mode: "service:gluetun"
+    networks:
+      - net
 
   prowlarr:
     image: lscr.io/linuxserver/prowlarr:latest
@@ -77,9 +81,11 @@ services:
       - TZ=Europe/Amsterdam
     volumes:
       - D:\srv\data\prowlarr:/config
-    depends_on:
-      - gluetun
-    network_mode: "service:gluetun"
+    ports:
+      - 9696:9696
+    # network_mode: "service:gluetun"
+    networks:
+      - net
 
   recyclarr:
     image: ghcr.io/recyclarr/recyclarr:latest
@@ -124,40 +130,41 @@ services:
     networks:
       - net
       
-  gluetun:
-    image: qmcgaw/gluetun:latest
-    container_name: gluetun
-    restart: unless-stopped
-    labels:
-      glance.name: Gluetun
-      glance.icon: di:gluetun
-      glance.description: vpn client
-      glance.category: network
-    cap_add:
-        - NET_ADMIN
-    devices:
-        - /dev/net/tun:/dev/net/tun
-    environment:
-      - VPN_SERVICE_PROVIDER=mullvad
-      - VPN_TYPE=wireguard
-      - WIREGUARD_PRIVATE_KEY=${WIREGUARD_KEY}
-      - WIREGUARD_ADDRESSES=${WIREGUARD_ADDRESS}
-      - SERVER_COUNTRIES=Netherlands
-      - TZ=Europe/Amsterdam
-    volumes:
-    - D:\srv\data\gluetun:/gluetun
-    healthcheck:
-      test: ["CMD", "wget", "-qO", "-", "https://ipinfo.io/ip"]
-      interval: 30s
-      retries: 3
-    ports:
-      - 9696:9696
-      - 8191:8191
-      - 8080:8080
-      - 6881:6881/udp
-      - 6881:6881/tcp
-    networks:
-      - net
+  # gluetun:
+  #   image: qmcgaw/gluetun:latest
+  #   container_name: gluetun
+  #   restart: unless-stopped
+  #   labels:
+  #     glance.name: Gluetun
+  #     glance.icon: di:gluetun
+  #     glance.description: vpn client
+  #     glance.category: network
+  #   cap_add:
+  #       - NET_ADMIN
+  #   devices:
+  #       - /dev/net/tun:/dev/net/tun
+  #   environment:
+  #     - VPN_SERVICE_PROVIDER=mullvad
+  #     - VPN_TYPE=wireguard
+  #     - WIREGUARD_PRIVATE_KEY=${WIREGUARD_KEY}
+  #     - WIREGUARD_ADDRESSES=${WIREGUARD_ADDRESS}
+  #     - SERVER_COUNTRIES=Netherlands
+  #     - FIREWALL_VPN_INPUT_PORTS=45678,7777,1337,451,6969,80,443,2710
+  #     - TZ=Europe/Amsterdam
+  #   volumes:
+  #   - D:\srv\data\gluetun:/gluetun
+  #   healthcheck:
+  #     test: ["CMD", "wget", "-qO", "-", "https://ipinfo.io/ip"]
+  #     interval: 30s
+  #     retries: 3
+  #   ports:
+  #     - 9696:9696 # prowlarr
+  #     - 8191:8191 # flaresolver
+  #     - 8080:8080 # qbit gui
+  #     - 45678:45678/udp # torrenting ports
+  #     - 45678:45678/tcp
+  #   networks:
+  #     - net
 
   flaresolverr:
     image: flaresolverr/flaresolverr:latest
@@ -177,5 +184,9 @@ services:
       - radarr
       - sonarr
       - prowlarr
-      - gluetun
-    network_mode: "service:gluetun"
+      # - gluetun
+    ports:
+      - 8191:8191
+    # network_mode: "service:gluetun"
+    networks:
+      - net
