@@ -30,10 +30,10 @@ services:
       glance.name: Watchtower
       glance.icon: di:watchtower
       glance.description: automatic docker container updates
-      glance.category: management   
+      glance.category: management
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
-    command: --interval 300 --cleanup
+    command: --interval 86400 --cleanup --rolling-restart --include-restarting
     networks:
       - net
 
