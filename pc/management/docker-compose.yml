@@ -1,18 +1,16 @@
 services:
   watchtower:
-    image: containrrr/watchtower
+    image: containrrr/watchtower:latest
     container_name: watchtower
     restart: unless-stopped
     labels:
       glance.name: Watchtower
       glance.icon: di:watchtower
       glance.description: automatic docker container updates
-      glance.category: management   
+      glance.category: management
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
-    command: --interval 300 --cleanup
-    environment:
-      - DOCKER_API_VERSION=1.52
+    command: --interval 86400 --cleanup --rolling-restart --include-restarting
     networks:
       - net
 
