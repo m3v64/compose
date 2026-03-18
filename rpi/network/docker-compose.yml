@@ -19,24 +19,24 @@ services:
     networks:
       - net
   
-  blocky:
-    image: spx01/blocky
-    container_name: blocky
-    restart: unless-stopped
-    hostname: blocky
-    labels:
-      glance.name: blocky
-      glance.icon: di:blocky
-      glance.description: a dns proxy used for adblocking etc
-      glance.category: network
-    ports:
-      - "53:53/tcp"
-      - "53:53/udp"
-      - "4000:4000/tcp"
-    environment:
-      - TZ=Europe/Amsterdam
-    volumes:
-      - /etc/localtime:/etc/localtime:ro
-      - /home/m3v/shared/rpi-docker/data/blocky/config-day.yml:/app/config.yml:ro
-    networks:
-      - net
+  # blocky:
+  #   image: spx01/blocky
+  #   container_name: blocky
+  #   restart: unless-stopped
+  #   hostname: blocky
+  #   labels:
+  #     glance.name: blocky
+  #     glance.icon: di:blocky
+  #     glance.description: a dns proxy used for adblocking etc
+  #     glance.category: network
+  #   ports:
+  #     - "53:53/tcp"
+  #     - "53:53/udp"
+  #     - "4000:4000/tcp"
+  #   environment:
+  #     - TZ=Europe/Amsterdam
+  #   volumes:
+  #     - /etc/localtime:/etc/localtime:ro
+  #     - /home/m3v/shared/rpi-docker/data/blocky/config-day.yml:/app/config.yml:ro
+  #   networks:
+  #     - net
