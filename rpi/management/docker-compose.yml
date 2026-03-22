@@ -73,11 +73,16 @@ services:
     restart: unless-stopped
     ports:
       - "8080:8080"
+    privileged: true
+    devices:
+      - /dev/kmsg:/dev/kmsg
+    command: ["--docker_only=true"]
     volumes:
       - /:/rootfs:ro
-      - /var/run:/var/run:ro
+      - /var/run/docker.sock:/var/run/docker.sock:ro
       - /sys:/sys:ro
-      - /var/lib/docker/:/var/lib/docker:ro
+      - /sys/fs/cgroup:/sys/fs/cgroup:ro
+      - /var/lib/docker:/var/lib/docker:ro
       - /etc/machine-id:/etc/machine-id:ro
     networks:
       - net

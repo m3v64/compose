@@ -22,13 +22,17 @@ services:
       glance.name: cadvisor
       glance.icon: di:cadvisor
       glance.description: docker container stat tracking application
-      glance.category: management   
+      glance.category: management
+    privileged: true
     ports:
       - "8228:8080"
+    command:
+      - --docker_only=true
     volumes:
       - /:/rootfs:ro
       - /var/run:/var/run:ro
       - /sys:/sys:ro
+      - /sys/fs/cgroup:/sys/fs/cgroup:ro
       - /var/lib/docker/:/var/lib/docker:ro
       - /dev/disk/:/dev/disk:ro
     networks:
