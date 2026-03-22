@@ -79,7 +79,8 @@ services:
       - /sys:/sys:ro
       - /var/lib/docker/:/var/lib/docker:ro
       - /etc/machine-id:/etc/machine-id:ro
-    privileged: true
+    networks:
+      - net
 
 volumes:
   prometheus_data:
