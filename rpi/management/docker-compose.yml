@@ -82,6 +82,7 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock:ro
       - /sys:/sys:ro
       - /sys/fs/cgroup:/sys/fs/cgroup:ro
+      - /run/containerd:/run/containerd:ro
       - /var/lib/docker:/var/lib/docker:ro
       - /etc/machine-id:/etc/machine-id:ro
     networks:
