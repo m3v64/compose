@@ -37,3 +37,17 @@ services:
       - /dev/disk/:/dev/disk:ro
     networks:
       - net
+
+  windows-exporter:
+    image: ghcr.io/prometheus-community/windows-exporter:latest
+    container_name: windows-exporter
+    restart: unless-stopped
+    labels:
+      glance.name: Windows Exporter
+      glance.icon: si:prometheus
+      glance.description: windows system metrics for prometheus
+      glance.category: management
+    ports:
+      - "9182:9182"
+    networks:
+      - net
